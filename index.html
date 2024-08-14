@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color: rgb(234, 220, 67);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+        ctx.fillStyle = "orange";
+        ctx.fillRect(100,100,100,100)
+        ctx.fillStyle = "#ffffff";
+        ctx.fillRect(180,180,100,100)
+        ctx.fillStyle = "rgb(255, 255, 0, 0.5)";
+        ctx.fillRect(260,260,100,100)
+    </script>
+</body>
+</html>
