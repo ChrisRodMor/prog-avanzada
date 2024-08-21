@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color:rgb(185, 255, 250);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+
+        my_canvas.addEventListener("click",function(e){
+            ctx.beginPath();
+            ctx.arc(e.x, e.y, 40, 0, 2 * Math.PI);
+            ctx.fillStyle = "rgba(255,255,255,0.5)";
+            ctx.stroke();
+            ctx.fill();
+        });
+
+    </script>
+</body>
+</html>
