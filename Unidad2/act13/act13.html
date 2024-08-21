@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color:rgb(185, 255, 250);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+
+        my_canvas.addEventListener("click",function(e){
+            ctx.beginPath();
+            ctx.arc(e.x, e.y, 40, 0, 2 * Math.PI);
+            ctx.stroke();
+            ctx.fill();
+        });
+
+        my_canvas.addEventListener("mouseover",function(e){
+            ctx.fillStyle = getRandomColor();
+        });
+
+        function getRandomColor() {
+            var trans = '0.5'; // 50% transparency
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+              color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')'; // add the transparency
+            return color;
+        }
+
+    </script>
+</body>
+</html>
