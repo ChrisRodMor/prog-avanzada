@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color:rgb(185, 255, 250);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+        var figura = 0;
+        var isMouseDown = false;
+
+        my_canvas.addEventListener("mousedown",function(e){
+            isMouseDown = true;
+            if(figura == 0){
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, 50, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+            }else{
+                ctx.beginPath();
+                ctx.fillRect(e.x-50, e.y-50, 100, 100);
+                ctx.strokeRect(e.x-50, e.y-50, 100, 100);
+                ctx.fill();
+            }
+        });
+
+        my_canvas.addEventListener("mousemove",function(e){
+            if (isMouseDown) {
+                ctx.fillStyle = 'black';
+                ctx.beginPath();
+                ctx.arc(e.x, e.y, 3, 0, 2 * Math.PI);
+                ctx.stroke();
+                ctx.fill();
+            }
+        });
+
+        my_canvas.addEventListener("mouseup",function(e){
+            isMouseDown = false;
+        });
+
+        my_canvas.addEventListener("mouseover",function(e){
+            if(figura == 0){
+                figura = 1;
+            }else{
+                figura = 0;
+            }
+            ctx.fillStyle = getRandomColor();
+        });
+
+        function getRandomColor() {
+            var trans = '0.5';
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+              color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')';
+            return color;
+        }
+
+    </script>
+</body>
+</html>
