@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color:rgb(185, 255, 250);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+        var ancho = 280;
+        var altura = 280;
+        
+        document.addEventListener("keydown", function(e) {
+            var currentColor = getRandomColor();
+            
+            switch(e.keyCode){
+                case 87:
+                    altura -= 10;
+                break;
+            
+                case 65:
+                    ancho -= 10;
+                break;
+                case 83:
+                    altura += 10;
+                break;
+                case 68:
+                    ancho += 10;
+                break;
+
+            }
+
+            ctx.fillStyle = currentColor;
+            ctx.beginPath();
+            ctx.fillRect(ancho, altura, 40, 40);
+            ctx.strokeRect(ancho, altura, 40, 40);
+            ctx.fill();
+        });
+
+        function getRandomColor() {
+            var trans = '0.5';
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+              color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')';
+            return color;
+        }
+
+    </script>
+</body>
+</html>
