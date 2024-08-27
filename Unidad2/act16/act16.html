@@ -18,23 +18,26 @@
         const ctx = my_canvas.getContext('2d')
         var figura = 0;
         var isMouseDown = false;
+        var currentColor = getRandomColor();
 
-        my_canvas.addEventListener("mousedown",function(e){
+        my_canvas.addEventListener("mousedown", function(e){
             isMouseDown = true;
+            ctx.fillStyle = currentColor;
+
             if(figura == 0){
                 ctx.beginPath();
                 ctx.arc(e.x, e.y, 50, 0, 2 * Math.PI);
                 ctx.stroke();
                 ctx.fill();
-            }else{
+            } else {
                 ctx.beginPath();
-                ctx.fillRect(e.x-50, e.y-50, 100, 100);
-                ctx.strokeRect(e.x-50, e.y-50, 100, 100);
+                ctx.fillRect(e.x - 50, e.y - 50, 100, 100);
+                ctx.strokeRect(e.x - 50, e.y - 50, 100, 100);
                 ctx.fill();
             }
         });
 
-        my_canvas.addEventListener("mousemove",function(e){
+        my_canvas.addEventListener("mousemove", function(e){
             if (isMouseDown) {
                 ctx.fillStyle = 'black';
                 ctx.beginPath();
@@ -44,17 +47,17 @@
             }
         });
 
-        my_canvas.addEventListener("mouseup",function(e){
+        my_canvas.addEventListener("mouseup", function(e){
             isMouseDown = false;
         });
 
-        my_canvas.addEventListener("mouseover",function(e){
+        my_canvas.addEventListener("mouseover", function(e){
             if(figura == 0){
                 figura = 1;
-            }else{
+            } else {
                 figura = 0;
             }
-            ctx.fillStyle = getRandomColor();
+            currentColor = getRandomColor();
         });
 
         function getRandomColor() {
