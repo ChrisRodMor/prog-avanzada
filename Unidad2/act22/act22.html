@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="400" style="border:1px solid #000;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fondo
+        ctx.fillStyle = "rgb(255,154,87)"; // Color naranja
+        ctx.fillRect(0, 0, 600, 400); // Fondo
+
+        // Sol
+        ctx.beginPath();
+        ctx.arc(620, 5, 150, 0, Math.PI * 2, true); // Círculo para el sol
+        ctx.fillStyle = "rgb(255,231,108)"; // Color amarillo
+        ctx.fill();
+
+
+        // Montañas (triángulos)
+        ctx.beginPath();
+        ctx.moveTo(0, 250); // Punto inferior izquierdo de la primera montaña
+        ctx.lineTo(120, 130); // Pico de la primera montaña
+        ctx.lineTo(300, 250); // Punto inferior derecho de la primera montaña
+        ctx.closePath();
+        ctx.fillStyle = "rgb(255,182,108)";
+        ctx.fillRect(0,250,600,200)
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(300, 250); // Punto inferior izquierdo de la primera montaña
+        ctx.lineTo(450, 170); // Pico de la primera montaña
+        ctx.lineTo(600, 250); // Punto inferior derecho de la primera montaña
+        ctx.closePath();
+        ctx.fillStyle = "rgb(255,182,108)";
+        ctx.fillRect(0,250,600,200)
+        ctx.fill();
+        
+
+        //Montañas donde pega sol
+        ctx.beginPath();
+        ctx.moveTo(280, 400); // Punto inferior izquierdo de la segunda montaña
+        ctx.lineTo(120, 130); // Pico de la segunda montaña
+        ctx.lineTo(300, 250); // Punto inferior derecho de la segunda montaña
+        ctx.closePath();
+        ctx.fillStyle = "rgb(255,212,108)";
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.moveTo(600, 350); // Punto inferior izquierdo de la segunda montaña
+        ctx.lineTo(450, 170); // Pico de la segunda montaña
+        ctx.lineTo(600, 250); // Punto inferior derecho de la segunda montaña
+        ctx.closePath();
+        ctx.fillStyle = "rgb(255,212,108)";
+        ctx.fill();
+
+    </script>
+</body>
+</html>
