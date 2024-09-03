@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="400" style="border:1px solid #000;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fondo
+        ctx.fillStyle = "rgb(179,238,254)";
+        ctx.fillRect(0, 0, 600, 400);
+
+        
+        // cuadros
+        ctx.beginPath();
+        ctx.fillStyle = "rgb(255,144,97)";
+        ctx.fillRect(30,130,45,45);
+        ctx.strokeRect(30,130,45,45);
+        
+        ctx.fillRect(480,130,45,45);
+        ctx.strokeRect(480,130,45,45);
+        
+        ctx.fillRect(120,50,45,45);
+        ctx.strokeRect(120,50,45,45);
+        
+        ctx.fillRect(165,50,45,45);
+        ctx.strokeRect(165,50,45,45);
+        
+        ctx.closePath();
+        
+        
+        //cuadros de fondo colores
+
+        ctx.beginPath();
+        
+        //sombra azul
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.fillRect(210,145,100,190);
+        ctx.strokeRect(210,145,100,190);
+
+        //azul
+        ctx.fillStyle = "rgb(132,192,255)";
+        ctx.fillRect(200,130,100,190);
+        ctx.strokeRect(200,130,100,190);
+
+        //azul grade
+        ctx.fillStyle = "rgb(22,143,224)";
+        ctx.fillRect(200,296,100,4);
+        ctx.fillRect(295,130,4,210);
+
+        //sombra rosa
+        ctx.fillStyle = "rgb(0,0,0)";
+        ctx.fillRect(160,210,100,100);
+        ctx.strokeRect(160,210,100,100);
+        
+        //verde
+        ctx.fillStyle = "rgb(81,217,107)";
+        ctx.fillRect(480,200,120,100);
+        ctx.strokeRect(480,200,120,100);
+
+        //verde grade
+        ctx.fillStyle = "rgb(27,88,31)";
+        ctx.fillRect(480,296,120,4);
+
+
+
+        //rosa
+        ctx.fillStyle = "rgb(255,195,184)";
+        ctx.fillRect(145,200,100,100);
+        ctx.strokeRect(145,200,100,100);
+
+        //rosa grade
+        ctx.fillStyle = "rgb(223,149,120)";
+        ctx.fillRect(145,295,100,4);
+        ctx.fillRect(240,200,4,100);
+        
+        ctx.closePath();
+
+        
+
+        
+        // Tornillos
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(155, 210, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(235, 210, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(155, 290, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(235, 290, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(287, 290, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(287, 145, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(212, 145, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(490, 210, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.strokeStyle = "rgb(0,0,0)";
+        ctx.arc(490, 290, 6, 0, Math.PI * 2, true);
+        ctx.fillStyle = "rgb(181,191,192)";
+        ctx.lineWidth = 2; // Grosor de la línea
+        ctx.fill();
+        ctx.stroke();
+        ctx.closePath();
+
+        // Suelo 1
+        ctx.fillStyle = "rgb(168,114,69)";
+        ctx.fillRect(30, 320, 590, 100); 
+
+        // Suelo 2
+        ctx.fillStyle = "rgb(238,154,101)";
+        ctx.fillRect(29, 300, 590, 20);
+
+        // Mosaicos dentro del suelo
+        const tileSize = 30; // Tamaño de cada mosaico
+        const color1 = "rgb(94,63,37)";
+        const color2 = "rgb(94,63,37)";
+
+        for (let y = 320; y < 410; y += tileSize) {
+            for (let x = 30; x < 590; x += tileSize) {
+                // Alternar entre dos colores
+                if ((Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2 === 0) {
+                    ctx.strokeStyle = color1; // Mosaico lleno
+                } else {
+                    ctx.strokeStyle = color2; // Mosaico vacío
+                }
+                ctx.strokeRect(x, y, tileSize, tileSize); // Dibujar cada mosaico
+            }
+        }
+
+        // Tuberia verde
+        ctx.beginPath();
+        ctx.fillStyle = "#1B9916";
+        ctx.fillRect(340, 220, 80, 80);
+        ctx.strokeStyle = "#000000"; 
+        ctx.lineWidth = 3; 
+        ctx.strokeRect(340, 220, 80, 80);
+        
+        // Superior tuberia
+        ctx.fillStyle = "#1B9916";
+        ctx.fillRect(330, 200, 100, 40);
+        ctx.strokeStyle = "#000000"; 
+        ctx.lineWidth = 3; 
+        ctx.strokeRect(330, 200, 100, 40);
+
+    </script>
+</body>
+</html>
