@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <canvas id="canvas" width="600" height="400" style="border:1px solid #000;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+
+        // Fondo
+        ctx.fillStyle = "rgb(32,0,160)";
+        ctx.fillRect(0, 0, 600, 400);
+
+        // Anillos (sin relleno)
+        ctx.beginPath();
+        ctx.arc(140, 200, 18, 0, Math.PI * 2, true);
+        ctx.strokeStyle = "rgb(255,255,0)"; 
+        ctx.lineWidth = 3; // Grosor de la línea
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(220, 200, 18, 0, Math.PI * 2, true);
+        ctx.strokeStyle = "rgb(255,255,0)"; 
+        ctx.lineWidth = 3; // Grosor de la línea
+        ctx.stroke();
+        ctx.closePath();
+
+        ctx.beginPath();
+        ctx.arc(300, 200, 18, 0, Math.PI * 2, true);
+        ctx.strokeStyle = "rgb(255,255,0)";
+        ctx.lineWidth = 3; // Grosor de la línea
+        ctx.stroke();
+        ctx.closePath();
+
+        // Suelo 1
+        ctx.fillStyle = "rgb(192,96,0)";
+        ctx.fillRect(0, 260, 600, 150); 
+
+        // Mosaicos dentro del suelo
+        const tileSize = 30; // Tamaño de cada mosaico
+        const color1 = "rgb(192,96,0)";
+        const color2 = "rgb(96,32,0)"; 
+
+        for (let y = 260; y < 410; y += tileSize) {
+            for (let x = 0; x < 600; x += tileSize) {
+                // Alternar entre dos colores
+                if ((Math.floor(x / tileSize) + Math.floor(y / tileSize)) % 2 === 0) {
+                    ctx.fillStyle = color1; // Mosaico lleno
+                } else {
+                    ctx.fillStyle = color2; // Mosaico vacío
+                }
+                ctx.fillRect(x, y, tileSize, tileSize); // Dibujar cada mosaico
+            }
+        }
+
+        // Suelo 2
+        ctx.fillStyle = "rgb(128,224,0)";
+        ctx.fillRect(0, 240, 600, 20); 
+        // Suelo 3
+        ctx.fillStyle = "rgb(64,160,0)";
+        ctx.fillRect(0, 260, 600, 20); 
+        // Suelo 4
+        ctx.fillStyle = "rgb(0,96,0)";
+        ctx.fillRect(0, 280, 600, 20); 
+        // Suelo 5 sombra
+        ctx.fillStyle = "rgba(0,0,0,0.5)";
+        ctx.fillRect(0, 300, 600, 15);
+
+        // Dibujar el girasol
+        function drawSunflower(x, y) {
+
+            // Tronco
+            ctx.fillStyle = "rgb(64,160,0)";
+            ctx.fillRect(x - 5, y, 10, 90);
+            
+            // Petalos
+            const petalRadius = 30;
+            ctx.fillStyle = "rgb(224,224,0)";
+            for (let i = 0; i < 8; i++) {
+                ctx.beginPath();
+                ctx.ellipse(x, y, petalRadius, petalRadius / 2, i * Math.PI / 4, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.closePath();
+            }
+
+            
+
+            // Centro del girasol
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, Math.PI * 2);
+            ctx.fillStyle = "rgb(64,96,64)";
+            ctx.fill();
+            ctx.closePath();
+        }
+
+        drawSunflower(530, 150);
+
+        // Dibujar las palmeras
+        function drawPalmTree(x, y) {
+            // Tronco
+            ctx.fillStyle = "rgb(128,64,0)";
+            ctx.fillRect(x - 5, y, 10, 150);
+
+            // Hojas
+            ctx.fillStyle = "rgb(128,224,0)";
+            const leafLength = 50;
+            const leafWidth = 30;
+            const numLeaves = 18;
+            for (let i = 0; i < numLeaves; i++) {
+                ctx.beginPath();
+                // Ajusta la posición y ángulo para mejorar la visibilidad
+                ctx.moveTo(x, y);
+                ctx.lineTo(x + leafLength * Math.cos(i * 2 * Math.PI / numLeaves), y - leafLength * Math.sin(i * 2 * Math.PI / numLeaves));
+                ctx.lineTo(x + leafWidth * Math.cos((i + 0.5) * 2 * Math.PI / numLeaves), y - leafWidth * Math.sin((i + 0.5) * 2 * Math.PI / numLeaves));
+                ctx.closePath();
+                ctx.fill();
+            }
+        }
+
+        drawPalmTree(40, 90);
+        drawPalmTree(450, 90);
+
+
+
+
+    </script>
+</body>
+</html>
