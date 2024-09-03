@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figura Humana con Canvas</title>
+</head>
+<body>
+    <canvas id="canvas" width="400" height="600" style="border:5px solid #000;"></canvas>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // orejas
+        ctx.beginPath();
+        ctx.arc(135, 130, 20, 0, Math.PI * 2, true); // Oreja izquierda
+        ctx.fillStyle = "#f0c9b2"; // Color de piel
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(265, 130, 20, 0, Math.PI * 2, true); // Oreja derecha
+        ctx.fill();
+
+        // cuello
+        ctx.fillStyle = "#f0c9b2"; // Color de piel
+        ctx.fillRect(185, 180, 30, 30); // Rectángulo para el cuello
+
+        // la cabeza
+        ctx.beginPath();
+        ctx.arc(200, 130, 70, 0, Math.PI * 2, true);
+        ctx.fillStyle = "#f0c9b2"; // Color de piel
+        ctx.fill();
+
+        // el cabello
+        ctx.fillStyle = "#000";
+        ctx.beginPath();
+        ctx.arc(200, 50 , 20, 0, Math.PI*2 , true);
+        ctx.arc(180, 60, 20, 0, Math.PI*2, true);
+        ctx.arc(150, 70, 20, 0, Math.PI*2, true);
+        ctx.arc(220, 60, 20, 0, Math.PI * 2, true);
+        ctx.arc(240, 70, 20, 0, Math.PI * 2, true); 
+        ctx.arc(160, 80, 20, 0, Math.PI * 2, true); 
+        ctx.arc(200, 80, 20, 0, Math.PI * 2, true); 
+        ctx.arc(180, 90, 20, 0, Math.PI * 2, true); 
+        ctx.arc(220, 90, 20, 0, Math.PI * 2, true);
+        ctx.arc(242, 80, 20, 0, Math.PI * 2, true);
+        ctx.fill();
+
+        // ojos
+        ctx.beginPath();
+        ctx.fillStyle = "#000"; 
+        ctx.arc(170, 130, 10, 0, Math.PI * 2, true); // Ojo izquierdo 
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(230, 130, 10, 0, Math.PI * 2, true); // Ojo derecho
+        ctx.fill();
+
+        // lentes
+        ctx.beginPath();
+        ctx.arc(170, 130, 20, 0, Math.PI * 2, true); // lente izq
+        ctx.fillStyle ="rgba(255,255,255,0.4)";
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(230, 130, 20, 0, Math.PI * 2, true); // lente derecho
+        ctx.fillStyle ="rgba(255,255,255,0.4)";
+        ctx.fill();
+        ctx.stroke();
+
+        // Línea recta entre los lentes
+        ctx.beginPath();
+        ctx.moveTo(190, 130);
+        ctx.lineTo(210, 130); 
+        ctx.stroke();
+
+        // la boca
+        ctx.beginPath();
+        ctx.arc(200, 160, 20, 0, Math.PI, false); // Boca (arco invertido)
+        ctx.stroke();
+
+        // manos
+        ctx.beginPath();
+        ctx.arc(130, 325, 20, 0, Math.PI * 2, true); // Oreja izquierda
+        ctx.fillStyle = "#f0c9b2"; // Color de piel
+        ctx.fill();
+        ctx.stroke();
+
+        ctx.beginPath();
+        ctx.arc(270, 325, 20, 0, Math.PI * 2, true); // Oreja derecha
+        ctx.fill();
+        ctx.stroke();
+        
+        // cuerpo
+        ctx.fillStyle = "#9C9C9C"; // Color de la ropa
+        ctx.fillRect(150, 205, 100, 150); // Rectángulo para el torso
+        ctx.fillRect(110, 205, 40, 110); // Rectángulo para el brazo izquierdo
+        ctx.fillRect(250, 205, 40, 110); // Rectángulo para el brazo derecho
+
+        // piernas
+        ctx.fillStyle = "#000000"; // Color de la ropa
+        ctx.fillRect(150, 330, 100, 150); // Rectángulo para el torso
+
+        // tennis
+        ctx.fillStyle = "#9C9C9C"; // Color de la ropa
+        ctx.fillRect(150, 450, 100, 30); // Rectángulo para el torso
+
+    </script>
+</body>
+</html>
