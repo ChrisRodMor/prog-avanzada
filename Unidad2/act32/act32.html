@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        canvas{
+            background-color:rgb(185, 255, 250);
+        }
+    </style>
+</head>
+<body>
+    <canvas id="my_canvas" width="500" height="500"></canvas>
+
+    <script>
+        const my_canvas = document.getElementById('my_canvas')
+        const ctx = my_canvas.getContext('2d')
+        var direction = "";
+        var speed = 5;
+        var walls = [];
+
+        class Rectangulo{
+            constructor(x,y,width,height,color,speed){
+                this.x = x;
+                this.y = y;
+                this.width = width;
+                this.height = height;
+                this.color = color;
+                this.speed = speed;
+
+            }
+
+            tocando(otro){
+                if(this.x < otro.x + otro.width &&  this.x + this.width> otro.x &&    this.y < otro.y + otro.height &&    this.y + this.height > otro.y){  
+                    return true;/*actions*/  
+                }
+                return false;
+            }
+            
+        }
+        
+        var player = new Rectangulo(280,280,50,50, getRandomColor(),speed);
+        var target = new Rectangulo(100,100,20,20, getRandomColor(),10);
+        
+        walls.push(wall = new Rectangulo (50,400,300,15, getRandomColor(),10));
+        walls.push(wall2 = new Rectangulo (50,200,300,15, getRandomColor(),10));
+
+        document.addEventListener("keydown", function(e) {
+            
+            
+            switch(e.keyCode){
+                case 87:
+                    direction = "up";
+                break;
+                case 65:
+                    direction = "left";
+                break;
+                case 83:
+                    direction = "down";
+                break;
+                case 68:
+                    direction = "right";
+                break;
+                case 32:
+                    speed += 5;
+                break;
+
+            }
+
+            
+            
+        });
+
+        function update(){
+
+            switch(direction){
+                case "up":
+                    player.y -= speed;
+                    if(player.y+30<0){
+                        player.y = 530
+                    }
+                break;
+                case "left":
+                    player.x -= speed;
+                    if(player.x+30<0){
+                        player.x = 530;
+                    }
+                break;
+                case "down":
+                    player.y += speed;
+                    if(player.y-30>500){
+                        player.y = -30
+                    }
+                break;
+                break;
+                case "right":
+                    player.x += speed;
+                    if(player.x-30>500){
+                        player.x = -30;
+                    }
+                break;
+                
+                
+            }
+
+            if(player.tocando(target)){
+                target.x = Math.floor(Math.random()*500);
+                target.y = Math.floor(Math.random()*500);
+                target.color = getRandomColor();
+            };
+            
+            if(player.tocando(wall) || player.tocando(wall2)){
+                switch(direction){
+                    case "up":
+                        player.y += speed;
+
+                    break;
+                    case "left":
+                        player.x += speed;
+
+                    break;
+                    case "down":
+                        player.y -= speed;
+
+                    break;
+                    break;
+                    case "right":
+                        player.x -= speed;
+
+                    break;
+                }
+            }
+        }
+
+        function pintar(){
+            
+            ctx.fillStyle = 'rgb(185,255,250)';
+            ctx.fillRect(0, 0, 500, 500);
+            
+            //player
+            ctx.fillStyle = player.color;
+            ctx.fillRect(player.x, player.y, player.width, player.height);
+            ctx.strokeRect(player.x, player.y, player.width, player.height);
+            ctx.fill();
+
+            //target
+            ctx.fillStyle = target.color;
+            ctx.fillRect(target.x, target.y, target.width, target.height);
+            ctx.strokeRect(target.x, target.y, target.width, target.height);
+            ctx.fill();
+
+            //wall
+            walls.forEach(function(wall,indice,array){
+                ctx.fillStyle = wall.color;
+                ctx.fillRect(wall.x, wall.y, wall.width, wall.height);
+                ctx.strokeRect(wall.x, wall.y, wall.width, wall.height);
+                ctx.fill();
+            });
+
+            ctx.font = "20px Courier New";
+            ctx.fillStyle = 'black';
+            ctx.strokeText("Velocidad:" + speed,10,20);
+                
+            update();
+            requestAnimationFrame(pintar);
+        }
+
+        requestAnimationFrame(pintar);  
+
+        function getRandomColor() {
+            var trans = '0.5';
+            var color = 'rgba(';
+            for (var i = 0; i < 3; i++) {
+              color += Math.floor(Math.random() * 255) + ',';
+            }
+            color += trans + ')';
+            return color;
+        }
+
+    </script>
+</body>
+</html>
