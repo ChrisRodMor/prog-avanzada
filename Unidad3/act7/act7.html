@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Vue</title>
+    </head>
+    <body>
+        <div id="app">
+            <h1>NOMBRES</h1>
+            <input type="text" v-model="nombre" placeholder="Nombre" />
+            <input type="text" v-model="apellidos" placeholder="Apellidos" />
+            <button @click="agregarPersona()">Guardar</button>
+
+            <ul>
+                <li v-for="(persona, index) in personas" :key="index">
+                    {{ persona.nombre }} {{ persona.apellidos }}
+                </li>
+            </ul>
+            
+        </div>
+        
+        <script type="module">
+            import { createApp, ref } from 'https://unpkg.com/vue@3.2.47/dist/vue.esm-browser.js';
+
+            createApp({
+                setup() {
+                    const nombre = ref('');
+                    const apellidos = ref('');
+                    const personas = ref([]);
+
+                    const agregarPersona = () => {
+                        if (nombre.value && apellidos.value) {
+                            personas.value.push({
+                                nombre: nombre.value,
+                                apellidos: apellidos.value
+                            });
+                            nombre.value = '';
+                            apellidos.value = '';
+                        }
+                    };
+                    
+                    return {
+                        nombre,
+                        apellidos,
+                        personas,
+                        agregarPersona
+                    }
+                }
+            }).mount('#app')
+        </script>
+    </body>
+</html>
