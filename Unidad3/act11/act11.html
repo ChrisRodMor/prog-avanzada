@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Login</title>
+</head>
+<body>
+    <div id="app">
+        <div v-if="!logeado">
+            <h1>INICIAR SESION</h1>
+            <br>
+    
+            <form @submit.prevent="onSubmit">
+                <label for="TCorreo">Correo Electronico:</label><br>
+                <input type="email" v-model="correo" name="correo" required><br>
+                <label for="TContra">Contraseña</label><br>
+                <input type="password" v-model="contraseña" name="contraseña" required><br>
+                <input type="submit" value="Iniciar Sesion">
+            </form>
+        </div>
+        <div v-else>
+            <h1>Inicio de sesión exitoso!</h1>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createApp, ref } from 'https://unpkg.com/vue@3.2.47/dist/vue.esm-browser.js';
+
+        createApp({
+            setup() {
+                const correo = ref('');
+                const contraseña = ref('');
+                const logeado = ref(false);
+
+                const onSubmit = async () => {
+                    try {
+                        const response = await fetch('users.json');
+                        const users = await response.json();
+                        const user = users.find(u => u.email === correo.value && u.password === contraseña.value);
+
+                        if (user) {
+                            logeado.value = true;
+                            console.log('Login exitoso!');
+                        } else {
+                            console.log('Correo o contraseña inválidos');
+                        }
+                    } catch (error) {
+                        console.log('Error al hacer fetch');
+                    }
+                };
+
+                return {
+                    correo,
+                    contraseña,
+                    onSubmit,
+                    logeado
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
