@@ -1,0 +1,42 @@
+[
+  {
+    "id": "583c3ac3f38e84297c002546",
+    "nombre": "Christian Rodriguez Moreno",
+    "contraseña": "pass",
+    "correo": "poshito186@gmail.com",
+    "telefono": "+52 612 123 0102",
+    "fecha_de_nacimiento": "1990-07-15"
+  },
+  {
+    "id": "583c5484cb79a5fe593425a9",
+    "nombre": "Pepe",
+    "contraseña": "pass123",
+    "correo": "test1@test.com",
+    "telefono": "+52 612 123 0102",
+    "fecha_de_nacimiento": "1985-10-20"
+  },
+  {
+    "id": "583c57672c7686377d2f66c9",
+    "nombre": "Simon",
+    "contraseña": "pass123",
+    "correo": "aaa@aaa.com",
+    "telefono": "+52 612 123 0102",
+    "fecha_de_nacimiento": "1979-12-05"
+  },
+  {
+    "id": "5840b954da0529cd293d76fe",
+    "nombre": "Momazos Refri",
+    "contraseña": "pass123",
+    "correo": "a@a.com",
+    "telefono": "+52 612 123 0102",
+    "fecha_de_nacimiento": "1993-03-22"
+  },
+  {
+    "id": "584a9d13e808bcf75f05f580",
+    "nombre": "teodoroXD",
+    "contraseña": "1",
+    "correo": "1@1",
+    "telefono": "+52 612 123 0102",
+    "fecha_de_nacimiento": "1988-11-11"
+  }
+]
