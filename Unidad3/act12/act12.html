@@ -63,7 +63,8 @@
 
                         if (user) {
                             logeado.value = true;
-                            sessionStorage.setItem('correo', correo.value);
+                            localStorage.setItem('User loggeado:', JSON.stringify(user));
+                            
                             alert("Bienvenido de vuelta, " + user.nombre);
                             
                             //HACER FETCH
