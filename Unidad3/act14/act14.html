@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Login</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; margin-top: 3%; background-color: rgb(131, 177, 177);">
+    <div id="app">
+        <div v-if="!logeado">
+            <h1>INICIAR SESION</h1>
+            <br>
+            <form @submit.prevent="onSubmit" style="display:grid; justify-content: center; align-items: center;">
+                <label for="TCorreo">Correo Electronico:</label><br>
+                <input type="email" v-model="correo" name="correo" required><br>
+                <label for="TContra">Contraseña</label><br>
+                <input type="password" v-model="contraseña" name="contraseña" required><br>
+                <input type="submit" value="Iniciar Sesion">
+            </form>
+        </div>
+        <div v-else>
+            <div v-if="!agregar && !editar">
+                <h1>Usuarios Registrados</h1>
+                <button class="btn btn-success mb-3" @click="agregarUser">Agregar Usuario</button>
+                <table class="table table-striped table-hover">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Nombre</th>
+                            <th>Correo</th>
+                            <th>Telefono</th>
+                            <th>Fecha de Nacimiento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="(user, index) in users" :key="user.correo">
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.nombre }}</td>
+                            <td>{{ user.correo }}</td>
+                            <td>{{ user.telefono }}</td>
+                            <td>{{ user.fecha_de_nacimiento }}</td>
+                            <td>
+                                <button class="btn btn-warning btn-sm" @click="editarUser(user)">Editar</button>
+                                <button class="btn btn-danger btn-sm" @click="borrarUser(index)">Borrar</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div v-if="agregar">
+                <h1>REGISTRAR USUARIO</h1>
+                <form @submit.prevent="onAgregarUser" style="display:grid; justify-content: center; align-items: center;">
+                    <label for="TNombre">Nombre:</label><br>
+                    <input type="text" v-model="nuevoUsuario.nombre" required><br>
+                    <label for="TCorreo">Correo:</label><br>
+                    <input type="email" v-model="nuevoUsuario.correo" required><br>
+                    <label for="TContra">Contraseña:</label><br>
+                    <input type="password" v-model="nuevoUsuario.contraseña" required><br>
+                    <label for="TTelefono">Telefono:</label><br>
+                    <input type="text" v-model="nuevoUsuario.telefono" required><br>
+                    <label for="TFechaNacimiento">Fecha de Nacimiento:</label><br>
+                    <input type="date" v-model="nuevoUsuario.fecha_de_nacimiento" required><br>
+                    <input type="submit" value="Agregar Usuario">
+                    <button @click="agregar = false">Cancelar</button>
+                </form>
+            </div>
+            <div v-if="editar">
+                <h1>EDITAR USUARIO</h1>
+                <form @submit.prevent="onEditUser" style="display:grid; justify-content: center; align-items: center;">
+                    <label for="TNombre">Nombre:</label><br>
+                    <input type="text" v-model="usuarioEdicion.nombre" required><br>
+                    <label for="TCorreo">Correo:</label><br>
+                    <input type="email" v-model="usuarioEdicion.correo" required readonly><br>
+                    <label for="TContra">Contraseña:</label><br>
+                    <input type="password" v-model="usuarioEdicion.contraseña" required><br>
+                    <label for="TTelefono">Telefono:</label><br>
+                    <input type="text" v-model="usuarioEdicion.telefono" required><br>
+                    <label for="TFechaNacimiento">Fecha de Nacimiento:</label><br>
+                    <input type="date" v-model="usuarioEdicion.fecha_de_nacimiento" required><br>
+                    <input type="submit" value="Aceptar cambios">
+                    <button @click="editar = false">Cancelar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createApp, ref } from 'https://unpkg.com/vue@3.2.47/dist/vue.esm-browser.js';
+
+        createApp({
+            setup() {
+                const correo = ref('');
+                const contraseña = ref('');
+                const logeado = ref(localStorage.getItem('logeado') === 'true');
+                const users = ref([]);
+                const agregar = ref(false);
+                const editar = ref(false);
+                const usuarioEdicion = ref({
+                    id: '',
+                    nombre: '',
+                    correo: '',
+                    contraseña: '',
+                    telefono: '',
+                    fecha_de_nacimiento: ''
+                });
+                const nuevoUsuario = ref({
+                    nombre: '',
+                    correo: '',
+                    contraseña: '',
+                    telefono: '',
+                    fecha_de_nacimiento: ''
+                });
+
+                const loadUsers = async () => {
+                    try {
+                        const response = await fetch('users.json');
+                        users.value = await response.json();
+                    } catch (error) {
+                        alert('Error al obtener los registros de usuarios');
+                    }
+                };
+
+                if (logeado.value) {
+                    loadUsers();
+                }
+
+                const onSubmit = async () => {
+                    try {
+                        const response = await fetch('users.json');
+                        const usersData = await response.json();
+                        const user = usersData.find(u => u.correo === correo.value && u.contraseña === contraseña.value);
+
+                        if (user) {
+                            logeado.value = true;
+                            localStorage.setItem('logeado', logeado.value);
+                            alert("Bienvenido de vuelta, " + user.nombre);
+                            await loadUsers();
+                        } else {
+                            alert('Correo o contraseña incorrectos');
+                        }
+                    } catch (error) {
+                        alert('Error al hacer fetch');
+                    }
+                };
+
+                const editarUser = (user) => {
+                    usuarioEdicion.value.nombre = user.nombre;
+                    usuarioEdicion.value.correo = user.correo;
+                    usuarioEdicion.value.contraseña = user.contraseña;
+                    usuarioEdicion.value.telefono = user.telefono;
+                    usuarioEdicion.value.fecha_de_nacimiento = user.fecha_de_nacimiento;
+                    editar.value = true;
+                };
+
+                const onEditUser = () => {
+                    let id = 0;
+                
+                    for (let i = 0; i < users.value.length; i++) {
+                        if (users.value[i].correo === usuarioEdicion.value.correo) {
+                            id = i;
+                            break;
+                        }
+                    }
+                
+                    
+                    users.value[id].nombre = usuarioEdicion.value.nombre;
+                    users.value[id].correo = usuarioEdicion.value.correo;
+                    users.value[id].contraseña = usuarioEdicion.value.contraseña;
+                    users.value[id].telefono = usuarioEdicion.value.telefono;
+                    users.value[id].fecha_de_nacimiento = usuarioEdicion.value.fecha_de_nacimiento;
+                
+                    alert("Usuario actualizado exitosamente");
+                    editar.value = false;
+                    usuarioEdicion.value = {
+                        id: '',
+                        nombre: '',
+                        correo: '',
+                        contraseña: '',
+                        telefono: '',
+                        fecha_de_nacimiento: ''
+                    };
+                };
+                
+
+                const borrarUser = (index) => {
+                    if (confirm("¿Estás seguro de que deseas eliminar este usuario?")) {
+                        for (let i = 0; i < users.value.length; i++) {
+                            if (i === index) {
+                                users.value[i] = null;
+                                break;
+                            }
+                        }
+                        users.value = users.value.filter(user => user != null);
+                    }
+                };
+                
+                const generateRandomId = () => {
+                    return Math.random().toString(36).substr(2, 9) + Date.now().toString(36);
+                };
+
+                const onAgregarUser = () => {
+                    if (nuevoUsuario.value.nombre && nuevoUsuario.value.correo && nuevoUsuario.value.contraseña && nuevoUsuario.value.telefono && nuevoUsuario.value.fecha_de_nacimiento) {
+                        const id = generateRandomId();
+                        const usuarioAAgregar = {
+                            id: id,
+                            nombre: nuevoUsuario.value.nombre,
+                            correo: nuevoUsuario.value.correo,
+                            contraseña: nuevoUsuario.value.contraseña,
+                            telefono: nuevoUsuario.value.telefono,
+                            fecha_de_nacimiento: nuevoUsuario.value.fecha_de_nacimiento
+                        };
+
+                        users.value.push(usuarioAAgregar);
+                        alert("Usuario agregado exitosamente");
+                        agregar.value = false;
+                        nuevoUsuario.value = {
+                            nombre: '',
+                            correo: '',
+                            contraseña: '',
+                            telefono: '',
+                            fecha_de_nacimiento: ''
+                        };
+                    } else {
+                        alert("Todos los campos son obligatorios para agregar un nuevo usuario");
+                    }
+                };
+
+                const agregarUser = () => {
+                    agregar.value = true;
+                };
+
+                return {
+                    correo,
+                    contraseña,
+                    logeado,
+                    onSubmit,
+                    users,
+                    editarUser,
+                    onEditUser,
+                    borrarUser,
+                    agregarUser,
+                    agregar,
+                    editar,
+                    usuarioEdicion,
+                    nuevoUsuario,
+                    onAgregarUser
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
