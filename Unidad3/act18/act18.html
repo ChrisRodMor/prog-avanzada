@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vue Login</title>
+    <link rel="stylesheet" href="https://unpkg.com/bootstrap/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body style="display: flex; justify-content: center; align-items: center; margin-top: 3%; background-color:rgb(131, 177, 177);">
+    <div id="app">
+        <div v-if="!logeado">
+            <h1>INICIAR SESION</h1>
+            <br>
+            <form @submit.prevent="onSubmit" style="display:grid; justify-content: center; align-items: center;">
+                <label for="TCorreo">Usuario:</label><br>
+                <input type="text" v-model="correo" name="correo" required><br>
+                <label for="TContra">Contraseña</label><br>
+                <input type="password" v-model="contraseña" name="contraseña" required><br>
+                <input type="submit" value="Iniciar Sesion">
+            </form>
+        </div>
+        <div v-else>
+            <h1>Peliculas</h1>
+            <div v-if="!selectedMovie && peliculas.length">
+                <div class="movie-container">
+                    <div v-for="pelicula in peliculas" :key="pelicula.id" class="movie-card">
+                        <img :src="'https://image.tmdb.org/t/p/w500' + pelicula.poster_path" alt="Movie Poster" style="width: 100%;">
+                        <h3>{{ pelicula.title }}</h3>
+                        <button @click="showDetails(pelicula)">Ver Detalles</button>
+                    </div>
+                </div>
+            </div>
+            <div v-else-if="selectedMovie">
+                <div class="movie-details">
+                    <img :src="'https://image.tmdb.org/t/p/w500' + selectedMovie.poster_path" alt="Movie Poster" style="width: 300px;">
+                    <h2>{{ selectedMovie.title }}</h2>
+                    <p><strong>Descripción:</strong> {{ selectedMovie.overview }}</p>
+                    <p><strong>Fecha de Lanzamiento:</strong> {{ selectedMovie.release_date }}</p>
+                    <p><strong>Calificación:</strong> {{ selectedMovie.vote_average.toFixed(1) }}</p>
+                    <p><strong>Tu Calificación:</strong> {{ selectedMovie.userRating ? selectedMovie.userRating.toFixed(1) : 'No calificado' }}</p>
+
+                    <input type="number" v-model="newRating" :placeholder="0" min="0" max="10" step="1">
+                    <button @click="rateMovie">Agregar Rating</button>
+                    <button @click="deleteRating(selectedMovie.id)">Eliminar Rating</button>
+
+                    <button @click="selectedMovie = null">Volver</button>
+                </div>
+            </div>
+            <div v-else>
+                <p>No se encontraron películas.</p>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { createApp, ref } from 'https://unpkg.com/vue@3.2.47/dist/vue.esm-browser.js';
+
+        createApp({
+            setup() {
+                const correo = ref('poshito186');
+                const contraseña = ref('');
+                const logeado = ref(false);
+                const peliculas = ref([]);
+                const selectedMovie = ref(null);
+                const newRating = ref(null);
+                const sessionId = ref('');
+
+                const onSubmit = async () => {
+                    try {
+                        const tokenResponse = await fetch('https://api.themoviedb.org/3/authentication/token/new?api_key=5c43388338dc06bb37a5d2ff5c92b1d3');
+                        const tokenData = await tokenResponse.json();
+                        const requestToken = tokenData.request_token;
+
+                        const validationResponse = await fetch('https://api.themoviedb.org/3/authentication/token/validate_with_login?api_key=5c43388338dc06bb37a5d2ff5c92b1d3', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                username: correo.value,
+                                password: contraseña.value,
+                                request_token: requestToken
+                            })
+                        });
+
+                        if (validationResponse.ok) {
+                            const sessionResponse = await fetch('https://api.themoviedb.org/3/authentication/session/new?api_key=5c43388338dc06bb37a5d2ff5c92b1d3', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ request_token: (await validationResponse.json()).request_token })
+                            });
+
+                            const sessionData = await sessionResponse.json();
+                            sessionId.value = sessionData.session_id;
+                            logeado.value = true;
+                            await fetchPeliculas();
+                            await fetchUserRatings();
+                        } else {
+                            alert('Credenciales inválidas. Por favor, inténtalo de nuevo.');
+                        }
+                    } catch (error) {
+                        console.log('Error en el login: ', error);
+                    }
+                };
+
+                const fetchPeliculas = async () => {
+                    try {
+                        const response = await fetch('https://api.themoviedb.org/3/movie/popular?api_key=5c43388338dc06bb37a5d2ff5c92b1d3&language=en-US&page=1');
+                        const data = await response.json();
+                        peliculas.value = data.results.map(pelicula => ({
+                            ...pelicula,
+                            userRating: null 
+                        }));
+                    } catch (error) {
+                        console.error('Error al obtener las películas: ', error);
+                    }
+                };
+
+                const fetchUserRatings = async () => {
+                    try {
+                        const response = await fetch(`https://api.themoviedb.org/3/account/{account_id}/rated/movies?api_key=5c43388338dc06bb37a5d2ff5c92b1d3&session_id=${sessionId.value}`);
+                        const data = await response.json();
+                        data.results.forEach(movie => {
+                            const index = peliculas.value.findIndex(p => p.id === movie.id);
+                            if (index !== -1) {
+                                peliculas.value[index].userRating = movie.rating;
+                            }
+                        });
+                    } catch (error) {
+                        console.error('Error al obtener las calificaciones del usuario: ', error);
+                    }
+                };
+
+                const showDetails = (movie) => {
+                    selectedMovie.value = { ...movie };
+                    newRating.value = selectedMovie.value.userRating || null;
+                };
+
+                const rateMovie = async () => {
+                    if (selectedMovie.value) {
+                        try {
+                            const response = await fetch(`https://api.themoviedb.org/3/movie/${selectedMovie.value.id}/rating?api_key=5c43388338dc06bb37a5d2ff5c92b1d3&session_id=${sessionId.value}`, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ value: newRating.value })
+                            });
+                            const data = await response.json();
+
+                            if (response.ok) {
+                                alert('Rating enviado con éxito');
+                                selectedMovie.value.userRating = newRating.value;
+                                const index = peliculas.value.findIndex(p => p.id === selectedMovie.value.id);
+                                if (index !== -1) {
+                                    peliculas.value[index].userRating = newRating.value;
+                                }
+                            } else {
+                                alert('Error al enviar rating: ' + data.status_message);
+                            }
+                        } catch (error) {
+                            console.log('Error al enviar rating: ', error);
+                        }
+                    }
+                };
+
+                const deleteRating = async (movieId) => {
+                    const options = {
+                        method: 'DELETE',
+                        headers: {
+                            accept: 'application/json',
+                            'Content-Type': 'application/json',
+                            Authorization: `Bearer ${sessionId.value}`
+                        }
+                    };
+
+                    try {
+                        const response = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/rating`, options);
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            if (selectedMovie.value) {
+                                selectedMovie.value.userRating = null;
+                                const index = peliculas.value.findIndex(p => p.id === movieId);
+                                if (index !== -1) {
+                                    peliculas.value[index].userRating = null;
+                                }
+                            }
+                            alert('Rating eliminado con éxito');
+                        } else {
+                            alert('Error al eliminar rating: ' + data.status_message);
+                        }
+                    } catch (error) {
+                        console.error('Error al eliminar rating:', error);
+                    }
+                };
+
+                return {
+                    correo,
+                    contraseña,
+                    logeado,
+                    onSubmit,
+                    peliculas,
+                    selectedMovie,
+                    showDetails,
+                    newRating,
+                    rateMovie,
+                    deleteRating
+                };
+            }
+        }).mount('#app');
+    </script>
+</body>
+</html>
