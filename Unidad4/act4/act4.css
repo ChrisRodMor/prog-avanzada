@@ -18,6 +18,7 @@ body {
 li {
   border: 1px solid #000;
   margin-bottom: 1px;
+  padding: 5px;
 }
 ul {
   margin-top: 15px;
@@ -26,4 +27,20 @@ ul {
 .main_color {
   font-size: 20px;
   color: #57ff15;
+}
+/* fuentes: https://stackoverflow.com/questions/21440789/loop-through-array-of-variable-names-in-less */
+li:nth-child(5) {
+  background-color: #D6524E;
+}
+li:nth-child(4) {
+  background-color: #F0AD4E;
+}
+li:nth-child(3) {
+  background-color: #5CC0DE;
+}
+li:nth-child(2) {
+  background-color: #5DB85B;
+}
+li:nth-child(1) {
+  background-color: #0275D8;
 }

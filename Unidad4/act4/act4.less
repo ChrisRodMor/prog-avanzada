@@ -1,17 +1,19 @@
 @container_background: #00b1c9;
 @text_color: #57ff15;
-*{
+@colors: #0275D8, #5DB85B, #5CC0DE, #F0AD4E, #D6524E;
+
+* {
     margin: 0;
 }
 
-body{
+body {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
 }
 
-.container{
+.container {
     margin: auto;
     border-radius: 10px;
     padding: 2%;
@@ -20,37 +22,29 @@ body{
     background-color: @container_background;
 }
 
-li{
+li {
     border: 1px solid #000;
     margin-bottom: 1px;
+    padding: 5px;
 }
 
-.color_1{
-    background-color: #0275D8;
-}
-
-.color_2{
-    background-color: #5DB85B;
-}
-
-.color_3{
-    background-color: #5CC0DE;
-}
-
-.color_4{
-    background-color: #F0AD4E;
-}
-
-.color_5{
-    background-color: #D6524E;
-}
-
-ul{
+ul {
     margin-top: 15px;
     margin-bottom: 15px;
 }
 
-.main_color{
+.main_color {
     font-size: 20px;
     color: @text_color;
 }
+
+/* fuentes: https://stackoverflow.com/questions/21440789/loop-through-array-of-variable-names-in-less */
+.loop(@index) when (@index > 0) {
+    @color: extract(@colors, @index);
+    li:nth-child(@{index}) {
+        background-color: @color;
+    }
+    .loop(@index - 1);
+}
+
+.loop(length(@colors));
