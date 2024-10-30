@@ -1,0 +1,14 @@
+RewriteEngine On
+
+# BASEPATH
+RewriteBase /prog-avanzada/Unidad4/act26/
+
+
+RewriteRule ^login/?$ login.php [L]
+RewriteRule ^home/?$ index.php [L]
+RewriteRule ^auth/?$ authController.php [L]
+RewriteRule ^detalleProducto/([a-zA-Z0-9\-]+)/?$ detalleProducto.php?slug=$1 [L,QSA]
+
+<FilesMatch ".*">
+    Require all granted
+</FilesMatch>
