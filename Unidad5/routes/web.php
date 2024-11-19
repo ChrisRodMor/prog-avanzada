@@ -5,7 +5,33 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+}); 
+
+
+Route::get('/sumar/{n1}/{n2}', function($n1, $n2) {
+    return "suma: " . $n1 . " + " . $n2 . " = " . ($n1 + $n2);
+})->where(['n1' => '[0-9]+', 'n2' => '[0-9]+']);
+
+Route::get('/restar/{n1}/{n2}', function($n1, $n2) {
+    return "resta: " . $n1 . " - " . $n2 . " = " . ($n1 - $n2);
+})->where(['n1' => '[0-9]+', 'n2' => '[0-9]+']);
+
+Route::get('/multiplicar/{n1}/{n2}', function($n1, $n2) {
+    return "multiplicación: " . $n1 . " * " . $n2 . " = " . ($n1 * $n2);
+})->where(['n1' => '[0-9]+', 'n2' => '[0-9]+']);
+
+Route::get('/dividir/{n1}/{n2}', function($n1, $n2) {
+    if ($n2 == 0) {
+        return "Error: no se puede dividir por cero.";
+    }
+    return "división: " . $n1 . " / " . $n2 . " = " . ($n1 / $n2);
+})->where(['n1' => '[0-9]+', 'n2' => '[0-9]+']);
+
+
+Route::get('/saludar/{name}/{lastname?}', function($name, $lastname = "N/A") {
+    return "Hola, " . $name . " " . $lastname;
+})->where('name', '[a-z]+');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');
